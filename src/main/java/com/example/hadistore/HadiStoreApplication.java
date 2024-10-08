@@ -1,5 +1,6 @@
 package com.example.hadistore;
 
+import com.example.hadistore.enums.Gender;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
