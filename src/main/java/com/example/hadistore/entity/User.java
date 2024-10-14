@@ -1,7 +1,5 @@
 package com.example.hadistore.entity;
 
-import com.example.hadistore.enums.Gender;
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
@@ -26,11 +24,8 @@ public class User extends BaseEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name = "username", nullable = false)
-    @NotBlank(message = "username không được để trống")
-    private String username;
-    @Column(name = "full_name")
-    private String fullName;
+    @Column(name = "name")
+    private String name;
     @Column(name = "avatar")
     private String avatar;
     @Column(name = "email")
@@ -46,8 +41,7 @@ public class User extends BaseEntity{
     @Column(name = "is_active")
     private Boolean isActive;
     @Column(name = "gender")
-    @Enumerated(EnumType.STRING)
-    private Gender gender;
+    private Boolean gender;
     @Column(name = "address")
     private String address;
 
@@ -59,16 +53,4 @@ public class User extends BaseEntity{
             uniqueConstraints = @UniqueConstraint(columnNames = {"user_id", "role_id"})
     )
     private Set<Role> roles = new HashSet<>();
-
-    @OneToMany(mappedBy = "user")
-    @JsonManagedReference
-    private Set<Rate> rateList;
-
-    @OneToMany(mappedBy = "user")
-    @JsonManagedReference
-    private List<Order> orderList;
-
-    @OneToMany(mappedBy = "user")
-    @JsonManagedReference
-    private List<Cart> cartList;
 }

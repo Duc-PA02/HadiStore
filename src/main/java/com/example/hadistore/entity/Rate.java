@@ -31,4 +31,8 @@ public class Rate extends BaseEntity{
     @JoinColumn(name = "product_id", foreignKey = @ForeignKey(name = "fk_rate_product"))
     @JsonBackReference
     private Product product;
+
+    @OneToOne
+    @JoinColumn(name = "orderDetailId")
+    private OrderDetail orderDetail;
 }

@@ -29,21 +29,19 @@ public class Product extends BaseEntity{
     @PositiveOrZero
     private BigDecimal price;
     @Column(name = "sale")
-    private Integer sale;
+    private int sale;
     @Column(name = "hot")
     private Boolean hot;
     @Column(name = "is_active")
     private Boolean isActive;
-    @Column(name = "total_rate")
-    private Integer totalRate;
-    @Column(name = "total_start")
-    private Float totalStart;
     @Column(name = "quantity")
     private Integer quantity;
     @Column(name = "color")
     private String color;
     @Column(name = "size")
-    private Integer size;
+    private int size;
+    private int sold;
+    private String thumbnail;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id", foreignKey = @ForeignKey(name = "fk_product_category"))
