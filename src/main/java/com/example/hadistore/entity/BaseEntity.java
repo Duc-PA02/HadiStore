@@ -1,13 +1,22 @@
 package com.example.hadistore.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-import java.io.Serializable;
 import java.time.LocalDate;
 
 @MappedSuperclass
-public abstract class BaseEntity implements Serializable {
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+public class BaseEntity {
+    @Column(name = "created_at")
     private LocalDate createdAt;
+    @Column(name = "updated_at")
     private LocalDate updatedAt;
 
     @PrePersist
