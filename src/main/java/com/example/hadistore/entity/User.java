@@ -1,18 +1,19 @@
 package com.example.hadistore.entity;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
+import java.time.LocalDate;
+import java.util.Collection;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "user")
@@ -20,31 +21,19 @@ import java.util.Set;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class User extends BaseEntity{
+public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name = "name")
     private String name;
-    @Column(name = "avatar")
-    private String avatar;
-    @Column(name = "email")
-    @NotBlank(message = "email không được để trống")
-    @Email(message = "Email không hợp lệ")
     private String email;
-    @Column(name = "password")
-    @NotBlank(message = "password không được để trống")
-    @Size(min = 6, message = "Password phải có ít nhất 6 ký tự")
     private String password;
-    @Column(name = "phone_number", length = 10)
-    private String phoneNumber;
-    @Column(name = "is_active")
-    private Boolean isActive;
-    @Column(name = "gender")
-    private Boolean gender;
-    @Column(name = "address")
+    private String phone;
     private String address;
-
+    private Boolean gender;
+    private String image;
+    private LocalDate registerDate;
+    private Boolean status;
     @ManyToMany
     @JoinTable(
             name = "user_role",
@@ -53,4 +42,48 @@ public class User extends BaseEntity{
             uniqueConstraints = @UniqueConstraint(columnNames = {"user_id", "role_id"})
     )
     private Set<Role> roles = new HashSet<>();
+
+    public User(String name, String email, String password, String phone, String address, Boolean gender, Boolean status, String image, LocalDate registerDate) {
+        this.name = name;
+        this.email = email;
+        this.password = password;
+        this.phone = phone;
+        this.address = address;
+        this.gender = gender;
+        this.status = status;
+        this.image = image;
+        this.registerDate = registerDate;
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return roles.stream()
+                .map(role -> new SimpleGrantedAuthority("ROLE_" + role.getName().toUpperCase()))
+                .collect(Collectors.toSet());
+    }
+
+    @Override
+    public String getUsername() {
+        return email;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return UserDetails.super.isAccountNonExpired();
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return UserDetails.super.isAccountNonLocked();
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return UserDetails.super.isCredentialsNonExpired();
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return UserDetails.super.isEnabled();
+    }
 }
