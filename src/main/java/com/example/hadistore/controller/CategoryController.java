@@ -1,8 +1,8 @@
 package com.example.hadistore.controller;
 
-import com.example.hadistore.dtos.CategoryDTO;
+import com.example.hadistore.dtos.request.CategoryRequest;
 import com.example.hadistore.entity.Category;
-import com.example.hadistore.service.category.ICategoryService;
+import com.example.hadistore.service.CategoryService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -14,7 +14,7 @@ import java.util.List;
 @RequestMapping("${api.prefix}/categories")
 @RequiredArgsConstructor
 public class CategoryController {
-    private final ICategoryService categoryService;
+    private final CategoryService categoryService;
 
     @GetMapping
     public ResponseEntity<?> getAll() {
@@ -28,13 +28,13 @@ public class CategoryController {
     }
 
     @PostMapping
-    public ResponseEntity<?> createCategory(@Valid @RequestBody CategoryDTO categoryDTO){
-        return ResponseEntity.ok(categoryService.createCategory(categoryDTO));
+    public ResponseEntity<?> createCategory(@Valid @RequestBody CategoryRequest categoryRequest){
+        return ResponseEntity.ok(categoryService.createCategory(categoryRequest));
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<?> updateCategory(@PathVariable("id") Integer id, @Valid @RequestBody CategoryDTO categoryDTO){
-        return ResponseEntity.ok(categoryService.updateCategory(id, categoryDTO));
+    public ResponseEntity<?> updateCategory(@PathVariable("id") Integer id, @Valid @RequestBody CategoryRequest categoryRequest){
+        return ResponseEntity.ok(categoryService.updateCategory(id, categoryRequest));
     }
 
     @DeleteMapping("{id}")

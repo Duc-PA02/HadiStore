@@ -1,11 +1,9 @@
 package com.example.hadistore.entity;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
-import java.util.Set;
 
 @Entity
 @Table(name = "category")
@@ -14,11 +12,12 @@ import java.util.Set;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Category extends BaseEntity{
+public class Category{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
     @Column(name = "name")
     @NotBlank
-    private String name;
+    private String categoryName;
+    private Boolean status;
 }

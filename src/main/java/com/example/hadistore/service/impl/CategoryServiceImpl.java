@@ -1,9 +1,10 @@
-package com.example.hadistore.service.category;
+package com.example.hadistore.service.impl;
 
-import com.example.hadistore.dtos.CategoryDTO;
+import com.example.hadistore.dtos.request.CategoryRequest;
 import com.example.hadistore.entity.Category;
 import com.example.hadistore.exceptions.DataNotFoundException;
 import com.example.hadistore.repository.CategoryRepository;
+import com.example.hadistore.service.CategoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,23 +14,24 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class CategoryService implements ICategoryService{
+public class CategoryServiceImpl implements CategoryService {
     private final CategoryRepository categoryRepository;
 
     @Override
     @Transactional
-    public Category createCategory(CategoryDTO categoryDTO) {
+    public Category createCategory(CategoryRequest categoryRequest) {
         Category newCategory = Category.builder()
-                .name(categoryDTO.getName())
+                .categoryName(categoryRequest.getCategoryName())
+                .status(true)
                 .build();
         return categoryRepository.save(newCategory);
     }
 
     @Override
     @Transactional
-    public Category updateCategory(Integer id, CategoryDTO categoryDTO) {
+    public Category updateCategory(Integer id, CategoryRequest categoryRequest) {
         Category existingCategory = getCategoryById(id);
-        existingCategory.setName(categoryDTO.getName());
+        existingCategory.setCategoryName(categoryRequest.getCategoryName());
         categoryRepository.save(existingCategory);
         return existingCategory;
     }
