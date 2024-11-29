@@ -1,9 +1,11 @@
 package com.example.hadistore.controller;
 
 import com.example.hadistore.dtos.request.ProductRequest;
+import com.example.hadistore.dtos.response.ResponseData;
 import com.example.hadistore.entity.Product;
 import com.example.hadistore.service.ProductService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -43,5 +45,14 @@ public class ProductController {
     @PostMapping
     public ResponseEntity<Product> createProduct(@RequestBody ProductRequest productRequest) {
         return ResponseEntity.ok(productService.createProduct(productRequest));
+    }
+    @PutMapping("{id}")
+    public ResponseEntity<Product> updateProduct(@PathVariable Long id, @RequestBody ProductRequest productRequest){
+        return ResponseEntity.ok(productService.updateProduct(id, productRequest));
+    }
+    @DeleteMapping("{id}")
+    public ResponseData<String> deleteProduct(@PathVariable Long id){
+        productService.deleteProduct(id);
+        return new ResponseData<>(HttpStatus.NO_CONTENT, "Delete product id = " + id + " successfully");
     }
 }

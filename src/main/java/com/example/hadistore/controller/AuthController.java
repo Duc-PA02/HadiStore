@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthController {
     private final UserService userService;
     @PostMapping("signup")
-    public ResponseData<User> signUp(@Valid @RequestBody SignUpRequest signupRequest){
+    public ResponseData<User> signup(@Valid @RequestBody SignUpRequest signupRequest){
         return new ResponseData<>(HttpStatus.OK, "Create user successfully", userService.createUser(signupRequest));
     }
     @PostMapping("login")

@@ -30,4 +30,13 @@ public class Product{
     @ManyToOne
     @JoinColumn(name = "category_id", foreignKey = @ForeignKey(name = "fk_product_category"))
     private Category category;
+
+    @PrePersist
+    private void onCreate(){
+        enteredDate = LocalDate.now();
+    }
+    @PreUpdate
+    private void onUpdate(){
+        enteredDate = LocalDate.now();
+    }
 }
