@@ -8,9 +8,9 @@ import lombok.Setter;
 @Setter
 public class ProductRequest {
     private String name;
-    private String description;
     private Double price;
-    private int sale;
-    private Integer quantity;
+    private int quantity;
+    private int discount;
+    private String description;
     private Integer categoryId;
 }

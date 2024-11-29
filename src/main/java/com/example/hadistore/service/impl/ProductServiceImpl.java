@@ -57,7 +57,7 @@ public class ProductServiceImpl implements ProductService {
                 .price(productRequest.getPrice())
                 .description(productRequest.getDescription())
                 .quantity(productRequest.getQuantity())
-                .discount(productRequest.getSale())
+                .discount(productRequest.getDiscount())
                 .status(true)
                 .category(category)
                 .build();

@@ -19,4 +19,5 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     List<Product> findProductRated();
     List<Product> findByStatusTrueOrderByEnteredDateDesc();
     List<Product> findByCategory(Category category);
+    List<Product> findByStatusTrueOrderByQuantityDesc();
 }

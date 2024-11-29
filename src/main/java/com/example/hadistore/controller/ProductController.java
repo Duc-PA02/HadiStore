@@ -21,27 +21,27 @@ public class ProductController {
         return ResponseEntity.ok(productService.getAllProducts());
     }
     @GetMapping("bestseller")
-    public ResponseEntity<List<Product>> getBestSeller() {
+    public ResponseEntity<List<Product>> getProductByBestSeller() {
         return ResponseEntity.ok(productService.getProductBestSeller());
     }
     @GetMapping("latest")
-    public ResponseEntity<List<Product>> getLasted() {
+    public ResponseEntity<List<Product>> getProductByLasted() {
         return ResponseEntity.ok(productService.getLasted());
     }
     @GetMapping("rated")
-    public ResponseEntity<List<Product>> getRated() {
+    public ResponseEntity<List<Product>> getProductByRated() {
         return ResponseEntity.ok(productService.getRated());
     }
     @GetMapping("category/{id}")
-    public ResponseEntity<List<Product>> getByCategory(@PathVariable("id") Integer id) {
+    public ResponseEntity<List<Product>> getProductByCategory(@PathVariable("id") Integer id) {
         return ResponseEntity.ok(productService.getProductByCategory(id));
     }
     @GetMapping("{id}")
-    public ResponseEntity<Product> getById(@PathVariable("id") Long id) {
+    public ResponseEntity<Product> getProductById(@PathVariable("id") Long id) {
         return ResponseEntity.ok(productService.getProductById(id));
     }
     @PostMapping
-    public ResponseEntity<Product> post(@RequestBody ProductRequest productRequest) {
+    public ResponseEntity<Product> createProduct(@RequestBody ProductRequest productRequest) {
         return ResponseEntity.ok(productService.createProduct(productRequest));
     }
 }
