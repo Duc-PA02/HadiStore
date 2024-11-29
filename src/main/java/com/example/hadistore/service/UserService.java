@@ -8,4 +8,5 @@ import com.example.hadistore.entity.User;
 public interface UserService {
     User createUser(SignUpRequest signUpRequest);
     LoginResponse login(LoginRequest loginRequest);
+    User findByEmail(String email);
 }

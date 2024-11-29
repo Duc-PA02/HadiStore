@@ -11,7 +11,7 @@ import lombok.Setter;
 public class Favorite {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long favoriteId;
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;

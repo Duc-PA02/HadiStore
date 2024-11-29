@@ -21,7 +21,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -52,21 +54,31 @@ public class UserServiceImmpl implements UserService {
 
     @Override
     public LoginResponse login(LoginRequest loginRequest) {
-        User user = userRepository.findByEmail(loginRequest.getUsername())
+        User user = userRepository.findByEmail(loginRequest.getEmail())
                 .orElseThrow(() -> new DataNotFoundException("User not found"));
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
-                        loginRequest.getUsername(),
+                        loginRequest.getEmail(),
                         loginRequest.getPassword()
                 )
         );
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String token = jwtTokenProvider.generateToken(user);
+
+        List<String> roles = user.getAuthorities().stream().map(item -> item.getAuthority())
+                .collect(Collectors.toList());
         LoginResponse response = new LoginResponse();
-        response.setId(user.getId());
+        response.setId(user.getUserId());
         response.setName(user.getName());
         response.setEmail(user.getEmail());
+        response.setRoles(roles);
         response.setToken(token);
         return response;
+    }
+
+    @Override
+    public User findByEmail(String email) {
+        return userRepository.findByEmail(email)
+                .orElseThrow(() -> new DataNotFoundException("Email not found"));
     }
 }

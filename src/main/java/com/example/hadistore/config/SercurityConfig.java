@@ -3,6 +3,7 @@ package com.example.hadistore.config;
 import com.example.hadistore.components.AuthTokenFilter;
 import com.example.hadistore.service.impl.UserDetailServiceImpl;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -45,9 +46,19 @@ public class SercurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(managementConfigure -> managementConfigure.sessionCreationPolicy(STATELESS))
                 .authorizeHttpRequests(authorizationRequests -> authorizationRequests
-                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                        .requestMatchers("/api/v1/login").permitAll()
-                        .requestMatchers("/api/v1/signup").permitAll()
+                        .requestMatchers(
+                                "/api/v1/login",
+                                "/api/v1/signup",
+                                "/api/v1/users/email/**",
+                                "api/v1/products",
+                                "api/v1/products/bestseller",
+                                "api/v1/products/latest",
+                                "api/v1/products/rated",
+                                "api/v1/products/{id}",
+                                "api/v1/products/categories/{id}",
+                                "api/v1/categories",
+                                "api/v1/categories/{id}"
+                        ).permitAll()
                         .requestMatchers("/api/v1/**").authenticated()
                 )
                 .addFilterBefore(authTokenFilter, UsernamePasswordAuthenticationFilter.class)

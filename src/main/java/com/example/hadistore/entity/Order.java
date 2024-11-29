@@ -14,7 +14,7 @@ import java.util.Date;
 public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long ordersId;
     private Date orderDate;
     private Double amount;
     private String address;

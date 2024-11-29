@@ -7,6 +7,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 
 @RestController
 @RequestMapping("${api.prefix}/products")
@@ -15,27 +17,27 @@ public class ProductController {
     private final ProductService productService;
 
     @GetMapping
-    public ResponseEntity<?> getAll(){
+    public ResponseEntity<List<Product>> getAll(){
         return ResponseEntity.ok(productService.getAllProducts());
     }
     @GetMapping("bestseller")
-    public ResponseEntity<?> getBestSeller() {
+    public ResponseEntity<List<Product>> getBestSeller() {
         return ResponseEntity.ok(productService.getProductBestSeller());
     }
     @GetMapping("latest")
-    public ResponseEntity<?> getLasted() {
+    public ResponseEntity<List<Product>> getLasted() {
         return ResponseEntity.ok(productService.getLasted());
     }
     @GetMapping("rated")
-    public ResponseEntity<?> getRated() {
+    public ResponseEntity<List<Product>> getRated() {
         return ResponseEntity.ok(productService.getRated());
     }
     @GetMapping("category/{id}")
-    public ResponseEntity<?> getByCategory(@PathVariable("id") Integer id) {
+    public ResponseEntity<List<Product>> getByCategory(@PathVariable("id") Integer id) {
         return ResponseEntity.ok(productService.getProductByCategory(id));
     }
     @GetMapping("{id}")
-    public ResponseEntity<?> getById(@PathVariable("id") Long id) {
+    public ResponseEntity<Product> getById(@PathVariable("id") Long id) {
         return ResponseEntity.ok(productService.getProductById(id));
     }
     @PostMapping
