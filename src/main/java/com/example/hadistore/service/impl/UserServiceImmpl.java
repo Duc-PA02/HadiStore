@@ -34,6 +34,12 @@ public class UserServiceImmpl implements UserService {
     private final CartRepository cartRepository;
     private final AuthenticationManager authenticationManager;
     private final JwtTokenProvider jwtTokenProvider;
+
+    @Override
+    public List<User> findUserByStatusTrue() {
+        return userRepository.findUserByStatusTrue();
+    }
+
     @Override
     public User createUser(SignUpRequest signupRequest) {
         if (userRepository.existsByEmail(signupRequest.getEmail())){

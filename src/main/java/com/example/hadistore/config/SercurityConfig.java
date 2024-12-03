@@ -47,6 +47,7 @@ public class SercurityConfig {
                 .sessionManagement(managementConfigure -> managementConfigure.sessionCreationPolicy(STATELESS))
                 .authorizeHttpRequests(authorizationRequests -> authorizationRequests
                         .requestMatchers(
+                                "/api/v1/**",
                                 "/api/v1/login",
                                 "/api/v1/signup",
                                 "/api/v1/users/email/**",
@@ -57,8 +58,11 @@ public class SercurityConfig {
                                 "api/v1/products/{id}",
                                 "api/v1/products/categories/{id}",
                                 "api/v1/categories",
-                                "api/v1/categories/{id}"
+                                "api/v1/categories/{id}",
+                                "api/v1/users/**",
+                                "api/v1/statistical/**"
                         ).permitAll()
+                        .requestMatchers("api/v1/users/**","api/v1/statistical/**").hasRole("ADMIN")
                         .requestMatchers("/api/v1/**").authenticated()
                 )
                 .addFilterBefore(authTokenFilter, UsernamePasswordAuthenticationFilter.class)

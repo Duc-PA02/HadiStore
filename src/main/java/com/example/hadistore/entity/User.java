@@ -34,7 +34,7 @@ public class User implements UserDetails {
     private String image;
     private LocalDate registerDate;
     private Boolean status;
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "user_role",
             joinColumns = @JoinColumn(name = "user_id"),
@@ -53,6 +53,11 @@ public class User implements UserDetails {
         this.status = status;
         this.image = image;
         this.registerDate = registerDate;
+    }
+
+    @PrePersist
+    private void onCreate(){
+        registerDate = LocalDate.now();
     }
 
     @Override

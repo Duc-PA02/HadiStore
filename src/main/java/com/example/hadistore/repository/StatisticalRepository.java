@@ -18,8 +18,13 @@ public interface StatisticalRepository extends JpaRepository<Product, Long> {
     @Query(value = "select sum(amount) from orders where year(order_date) = ? and status = 2", nativeQuery = true)
     Double getRevenueByYear(int year);
 
-    @Query(value = "select sum(p.sold), c.category_name, (p.price*sum(p.sold)-(p.discount)*sum(p.sold)) from categories c\r\n"
-            + "join products p on p.category_id = c.category_id\r\n"
-            + "group by c.category_name order by sum(p.sold) desc", nativeQuery = true)
+    @Query(value = "select \n" +
+            "    sum(p.sold) as total_sold, \n" +
+            "    c.name as category_name, \n" +
+            "    (avg(p.price) * sum(p.sold) - (avg(p.discount) * sum(p.sold))) as total_revenue\n" +
+            "from category c\n" +
+            "join product p on p.category_id = c.category_id\n" +
+            "group by c.name\n" +
+            "order by total_sold desc;", nativeQuery = true)
     List<Object[]> getCategoryBestSeller();
 }
