@@ -21,8 +21,8 @@ public class UserController {
         return ResponseEntity.ok(userService.findUserByStatusTrue());
     }
     @GetMapping("email/{email}")
-    public ResponseData<User> getUserByEmail(@PathVariable String email){
-        return new ResponseData<>(HttpStatus.OK, "Successfully", userService.findByEmail(email));
+    public ResponseEntity<User> getUserByEmail(@PathVariable String email){
+        return ResponseEntity.ok(userService.findByEmail(email));
     }
     @PostMapping ResponseEntity<User> createUser(@RequestBody SignUpRequest signUpRequest){
         return ResponseEntity.ok(userService.createUser(signUpRequest));

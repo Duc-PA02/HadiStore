@@ -29,9 +29,13 @@ public class FavoriteController {
                                                          @PathVariable("email") String email) {
         return ResponseEntity.ok(favoriteService.findByProductAndUser(productId, email));
     }
+    @PostMapping("email")
+    public ResponseEntity<Favorite> createFavorite(@RequestBody Favorite favorite) {
+        return ResponseEntity.ok(favoriteService.createFavorite(favorite));
+    }
     @DeleteMapping("{id}")
-    public ResponseEntity<String> deleteFavorite(@PathVariable("id") Long id) {
+    public ResponseEntity<Void> deleteFavorite(@PathVariable("id") Long id) {
         favoriteService.deleteFavorite(id);
-        return ResponseEntity.ok("Delete favorite successfully");
+        return ResponseEntity.ok().build();
     }
 }
