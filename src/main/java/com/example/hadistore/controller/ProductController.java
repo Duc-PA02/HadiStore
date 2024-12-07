@@ -35,12 +35,17 @@ public class ProductController {
         return ResponseEntity.ok(productService.getRated());
     }
     @GetMapping("category/{id}")
-    public ResponseEntity<List<Product>> getProductByCategory(@PathVariable("id") Integer id) {
+    public ResponseEntity<List<Product>> getProductByCategory(@PathVariable("id") Long id) {
         return ResponseEntity.ok(productService.getProductByCategory(id));
     }
     @GetMapping("{id}")
     public ResponseEntity<Product> getProductById(@PathVariable("id") Long id) {
         return ResponseEntity.ok(productService.getProductById(id));
+    }
+    @GetMapping("suggest/{categoryId}/{productId}")
+    public ResponseEntity<List<Product>> getProductSuggest(@PathVariable("categoryId") Long categoryId,
+                                                 @PathVariable("productId") Long productId) {
+        return ResponseEntity.ok(productService.findProductSuggest(categoryId, productId));
     }
     @PostMapping
     public ResponseEntity<Product> createProduct(@RequestBody ProductRequest productRequest) {

@@ -22,6 +22,7 @@ public class Product{
     private Double price;
     private int discount;
     private String image;
+    @Column(length = 1000)
     private String description;
     private LocalDate enteredDate;
     private Boolean status;

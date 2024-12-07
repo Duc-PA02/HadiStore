@@ -29,7 +29,7 @@ public class FavoriteController {
                                                          @PathVariable("email") String email) {
         return ResponseEntity.ok(favoriteService.findByProductAndUser(productId, email));
     }
-    @PostMapping("email")
+    @PostMapping
     public ResponseEntity<Favorite> createFavorite(@RequestBody Favorite favorite) {
         return ResponseEntity.ok(favoriteService.createFavorite(favorite));
     }

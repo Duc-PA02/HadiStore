@@ -45,9 +45,18 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<Product> getProductByCategory(Integer categoryId) {
+    public List<Product> getProductByCategory(Long categoryId) {
         Category category = categoryRepository.findById(categoryId).orElseThrow(()->new EntityNotFoundException("Category not found with ID: " + categoryId));
         return productRepository.findByCategory(category);
+    }
+
+    @Override
+    public List<Product> findProductSuggest(Long categoryId, Long productId) {
+        categoryRepository.findById(categoryId)
+                .orElseThrow(() -> new DataNotFoundException("Category not found"));
+        productRepository.findById(productId)
+                .orElseThrow(() -> new DataNotFoundException("Product not found"));
+        return productRepository.findSuggestedProducts(categoryId, productId);
     }
 
     @Override
@@ -58,6 +67,7 @@ public class ProductServiceImpl implements ProductService {
                 .price(productRequest.getPrice())
                 .description(productRequest.getDescription())
                 .quantity(productRequest.getQuantity())
+                .image(productRequest.getImage())
                 .discount(productRequest.getDiscount())
                 .status(true)
                 .category(category)

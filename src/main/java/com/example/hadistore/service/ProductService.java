@@ -16,7 +16,8 @@ public interface ProductService {
 
     Product getProductById(Long productId);
 
-    List<Product> getProductByCategory(Integer categoryId);
+    List<Product> getProductByCategory(Long categoryId);
+    List<Product> findProductSuggest(Long categoryId, Long productId);
 
     Product createProduct(ProductRequest productRequest);
     Product updateProduct(Long id, ProductRequest productRequest);
