@@ -8,6 +8,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Long> {
@@ -21,6 +22,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     List<Product> findByStatusTrueOrderByEnteredDateDesc();
     List<Product> findByCategory(Category category);
     List<Product> findByStatusTrueOrderByQuantityDesc();
+    Optional<Product> findByProductIdAndStatusTrue(Long id);
     @Query(value = "SELECT p " +
             "FROM Product p " +
             "LEFT JOIN Favorite f ON p.productId = f.product.productId " +

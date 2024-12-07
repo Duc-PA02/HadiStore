@@ -20,7 +20,7 @@ public class Cart {
     private String address;
     private String phone;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "user_id", foreignKey = @ForeignKey(name = "fk_cart_user"))
     private User user;
 

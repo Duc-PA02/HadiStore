@@ -16,13 +16,11 @@ public class CartDetail{
     private int quantity;
     private Double price;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "cart_id", foreignKey = @ForeignKey(name = "fk_cart_item_cart"))
-    @JsonBackReference
     private Cart cart;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "product_id", foreignKey = @ForeignKey(name = "fk_cart_item_product"))
-    @JsonBackReference
     private Product product;
 }
