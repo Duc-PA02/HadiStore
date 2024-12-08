@@ -39,11 +39,10 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     @Transactional
     public void deleteCategory(Long id) {
-        Optional<Category> existCategory = categoryRepository.findById(id);
-        if (existCategory.isEmpty()){
-            throw new DataNotFoundException("Category not found");
-        }
-        categoryRepository.deleteById(id);
+        Category category = categoryRepository.findById(id)
+                        .orElseThrow(() -> new DataNotFoundException("Category not found"));
+        category.setStatus(false);
+        categoryRepository.save(category);
     }
 
     @Override
@@ -53,6 +52,6 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public List<Category> getAllCategories() {
-        return categoryRepository.findAll();
+        return categoryRepository.findByStatusTrue();
     }
 }

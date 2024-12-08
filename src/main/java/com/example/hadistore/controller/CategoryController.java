@@ -1,10 +1,12 @@
 package com.example.hadistore.controller;
 
 import com.example.hadistore.dtos.request.CategoryRequest;
+import com.example.hadistore.dtos.response.ResponseData;
 import com.example.hadistore.entity.Category;
 import com.example.hadistore.service.CategoryService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -38,8 +40,8 @@ public class CategoryController {
     }
 
     @DeleteMapping("{id}")
-    public ResponseEntity<?> deleteCategory(@PathVariable("id") Long id){
+    public ResponseData<?> deleteCategory(@PathVariable("id") Long id){
         categoryService.deleteCategory(id);
-        return ResponseEntity.ok("delete success");
+        return new ResponseData<>(HttpStatus.NO_CONTENT,"delete success");
     }
 }
