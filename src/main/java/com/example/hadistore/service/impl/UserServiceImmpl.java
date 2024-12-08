@@ -45,13 +45,13 @@ public class UserServiceImmpl implements UserService {
         if (userRepository.existsByEmail(signupRequest.getEmail())){
             throw new DataIntegrityViolationException("Email already exists");
         }
-        Role role = roleRepository.findById(signupRequest.getRoleId())
-                .orElseThrow(() -> new DataNotFoundException("Role not found"));
+        Role userRole = roleRepository.findById(Role.USER)
+                .orElseThrow(() -> new IllegalStateException("Default role 'USER' not found in database"));
         User user = new User(signupRequest.getName(), signupRequest.getEmail(),
                 passwordEncoder.encode(signupRequest.getPassword()), signupRequest.getPhone(),
                 signupRequest.getAddress(), signupRequest.getGender(), signupRequest.getStatus(),
                 signupRequest.getImage(), signupRequest.getRegisterDate());
-        user.setRoles(Set.of(role));
+        user.setRoles(Set.of(userRole));
         userRepository.save(user);
         Cart cart = new Cart(0.0, user.getAddress(), user.getPhone(), user);
         cartRepository.save(cart);
@@ -86,5 +86,10 @@ public class UserServiceImmpl implements UserService {
     public User findByEmail(String email) {
         return userRepository.findByEmail(email)
                 .orElseThrow(() -> new DataNotFoundException("Email not found"));
+    }
+
+    @Override
+    public Boolean existEmail(String email) {
+        return userRepository.existsByEmail(email);
     }
 }

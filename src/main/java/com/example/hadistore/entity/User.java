@@ -11,7 +11,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDate;
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -41,7 +40,7 @@ public class User implements UserDetails {
             inverseJoinColumns = @JoinColumn(name = "role_id"),
             uniqueConstraints = @UniqueConstraint(columnNames = {"user_id", "role_id"})
     )
-    private Set<Role> roles = new HashSet<>();
+    private Set<Role> roles;
 
     public User(String name, String email, String password, String phone, String address, Boolean gender, Boolean status, String image, LocalDate registerDate) {
         this.name = name;
