@@ -1,11 +1,9 @@
 package com.example.hadistore.controller;
 
-import com.example.hadistore.dtos.MailInfo;
 import com.example.hadistore.dtos.request.LoginRequest;
 import com.example.hadistore.dtos.request.SignUpRequest;
 import com.example.hadistore.dtos.response.LoginResponse;
 import com.example.hadistore.dtos.response.ResponseData;
-import com.example.hadistore.entity.User;
 import com.example.hadistore.service.SendMailService;
 import com.example.hadistore.service.UserService;
 import jakarta.validation.Valid;

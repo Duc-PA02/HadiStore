@@ -14,16 +14,15 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 @Service
 @RequiredArgsConstructor
 @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
 public class SendMailServiceImpl implements SendMailService {
     JavaMailSender javaMailSender;
-    List<MailInfo> list = Collections.synchronizedList(new ArrayList<>());
+    Queue<MailInfo> queue = new ConcurrentLinkedQueue<>();
 
     @Override
     public void queue(String to, String subject, String body) {
@@ -32,7 +31,7 @@ public class SendMailServiceImpl implements SendMailService {
 
     @Override
     public void queue(MailInfo mail) {
-        list.add(mail);
+        queue.offer(mail);
     }
 
     @Override
@@ -62,14 +61,12 @@ public class SendMailServiceImpl implements SendMailService {
     @Override
     @Scheduled(fixedDelay = 5000)
     public void run() {
-        synchronized (list) {
-            while (!list.isEmpty()) {
-                MailInfo mail = list.remove(0);
-                try {
-                    this.send(mail);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+        while (!queue.isEmpty()) {
+            MailInfo mail = queue.poll();
+            try {
+                this.send(mail);
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }
     }
