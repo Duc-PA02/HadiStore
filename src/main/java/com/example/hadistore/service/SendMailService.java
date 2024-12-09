@@ -1,6 +1,7 @@
 package com.example.hadistore.service;
 
 import com.example.hadistore.dtos.MailInfo;
+import com.example.hadistore.entity.Order;
 import jakarta.mail.MessagingException;
 
 public interface SendMailService {
@@ -9,4 +10,5 @@ public interface SendMailService {
     void send(MailInfo mail) throws MessagingException;
     void sendOtp(String email, int otp, String title);
     void run();
+    void sendMailOrder(Order order);
 }

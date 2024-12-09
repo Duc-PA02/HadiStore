@@ -30,7 +30,6 @@ public class CartServiceImpl implements CartService {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new DataNotFoundException("User not found"));
         Cart cart = cartRepository.findByUser(user);
-        cart.setAmount(cartRequest.getAmount());
         cart.setAddress(cartRequest.getAddress());
         cart.setPhone(cartRequest.getPhone());
         return cartRepository.save(cart);

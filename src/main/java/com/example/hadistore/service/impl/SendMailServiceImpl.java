@@ -1,7 +1,11 @@
 package com.example.hadistore.service.impl;
 
 import com.example.hadistore.dtos.MailInfo;
+import com.example.hadistore.entity.Order;
+import com.example.hadistore.entity.OrderDetail;
+import com.example.hadistore.repository.OrderDetailRepository;
 import com.example.hadistore.service.SendMailService;
+import com.example.hadistore.utils.TemplateMail;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import lombok.AccessLevel;
@@ -14,6 +18,9 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
+import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
+import java.util.List;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
@@ -22,6 +29,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
 public class SendMailServiceImpl implements SendMailService {
     JavaMailSender javaMailSender;
+    OrderDetailRepository orderDetailRepository;
     Queue<MailInfo> queue = new ConcurrentLinkedQueue<>();
 
     @Override
@@ -69,5 +77,76 @@ public class SendMailServiceImpl implements SendMailService {
                 e.printStackTrace();
             }
         }
+    }
+
+    @Override
+    public void sendMailOrder(Order order) {
+        SimpleDateFormat dt = new SimpleDateFormat("dd-MM-yyyy");
+        List<OrderDetail> listOrderDetails = orderDetailRepository.findByOrder(order);
+        StringBuilder content = new StringBuilder();
+        content.append(TemplateMail.HEADER);
+        for (OrderDetail oderDetail : listOrderDetails) {
+            content.append("<tr>\r\n"
+                    + "                                                    <td width=\"25%\" align=\"left\" style=\"font-family: Open sans-serif; font-size: 18px; font-weight: 400; line-height: 24px; padding: 15px 10px 5px 10px;text-align: center;\">\r\n"
+                    + "                                                        <img style=\"width: 85%;\" src="
+                    + oderDetail.getProduct().getImage() + ">\r\n"
+                    + "                                                    </td>\r\n"
+                    + "                                                    <td width=\"25%\" align=\"left\" style=\"font-family: Open sans-serif; font-size: 18px; font-weight: 400; line-height: 24px; padding: 15px 10px 5px 10px;\"> "
+                    + oderDetail.getProduct().getName() + " </td>\r\n"
+                    + "                                                    <td width=\"25%\" align=\"left\" style=\"font-family: Open sans-serif; font-size: 18px; font-weight: 400; line-height: 24px; padding: 15px 10px 5px 10px;\"> "
+                    + oderDetail.getQuantity() + " </td>\r\n"
+                    + "                                                    <td width=\"25%\" align=\"left\" style=\"font-family: Open sans-serif; font-size: 18px; font-weight: 400; line-height: 24px; padding: 15px 10px 5px 10px;\"> "
+                    + format(String.valueOf(oderDetail.getPrice())) + " </td>\r\n"
+                    + "                                                </tr>");
+        }
+        content.append(TemplateMail.BODY2);
+        content.append(
+                "<td width=\"55%\" align=\"left\" style=\"font-family: Open sans-serif; font-size: 20px; font-weight: 800; line-height: 24px; padding: 10px; border-top: 3px solid #eeeeee; border-bottom: 3px solid #eeeeee;\"> Tổng tiền: </td>\r\n"
+                        + "                                                    <td width=\"25%\" align=\"left\" style=\"font-family: Open sans-serif; font-size: 20px; font-weight: 800; line-height: 24px; padding: 10px; border-top: 3px solid #eeeeee; border-bottom: 3px solid #eeeeee; color: red;\"> "
+                        + format(String.valueOf(order.getAmount())) + " </td>");
+        content.append(TemplateMail.BODY3);
+        content.append(
+                "<td align=\"center\" valign=\"top\" style=\"font-family: Open sans-serif; font-size: 20px; font-weight: 400; line-height: 24px;\">\r\n"
+                        + "                                                            <p style=\"font-weight: 800;\">Địa chỉ giao hàng</p>\r\n"
+                        + "                                                            <p>" + order.getAddress()
+                        + "</p>\r\n" + "                                                        </td>\r\n"
+                        + "                                                    </tr>\r\n"
+                        + "                                                </table>\r\n"
+                        + "                                            </div>\r\n"
+                        + "                                            <div style=\"display:inline-block; max-width:50%; min-width:240px; vertical-align:top; width:100%;\">\r\n"
+                        + "                                                <table align=\"left\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\" style=\"max-width:300px;\">\r\n"
+                        + "                                                    <tr>\r\n"
+                        + "                                                        <td align=\"center\" valign=\"top\" style=\"font-family: Open sans-serif; font-size: 20px; font-weight: 400; line-height: 24px;\">\r\n"
+                        + "                                                            <p style=\"font-weight: 800;\">Ngày đặt hàng</p>\r\n"
+                        + "                                                            <p>"
+                        + dt.format(order.getOrderDate()) + "</p>\r\n"
+                        + "                                                        </td>\r\n"
+                        + "                                                    </tr>\r\n"
+                        + "                                                </table>\r\n"
+                        + "                                            </div>\r\n"
+                        + "                                            <div style=\"display:inline-block; max-width:50%; min-width:240px; vertical-align:top; width:100%;\">\r\n"
+                        + "                                                <table align=\"left\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\" style=\"max-width:300px;\">\r\n"
+                        + "                                                    <tr>\r\n"
+                        + "                                                        <td align=\"center\" valign=\"top\" style=\"font-family: Open sans-serif; font-size: 20px; font-weight: 400; line-height: 24px;\">\r\n"
+                        + "                                                            <p style=\"font-weight: 800;\">Tên người nhận</p>\r\n"
+                        + "                                                            <p>" + order.getUser().getName()
+                        + "</p>\r\n" + "                                                        </td>\r\n"
+                        + "                                                    </tr>\r\n"
+                        + "                                                </table>\r\n"
+                        + "                                            </div>\r\n"
+                        + "                                            <div style=\"display:inline-block; max-width:50%; min-width:240px; vertical-align:top; width:100%;\">\r\n"
+                        + "                                                <table align=\"left\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\" style=\"max-width:300px;\">\r\n"
+                        + "                                                    <tr>\r\n"
+                        + "                                                        <td align=\"center\" valign=\"top\" style=\"font-family: Open sans-serif; font-size: 20px; font-weight: 400; line-height: 24px;\">\r\n"
+                        + "                                                            <p style=\"font-weight: 800;\">Số điện thoại</p>\r\n"
+                        + "                                                            <p>" + order.getPhone()
+                        + "</p>\r\n" + "                                                        </td>");
+        content.append(TemplateMail.FOOTER);
+        queue(order.getUser().getEmail(), "Đặt hàng thành công", content.toString());
+    }
+    private String format(String number) {
+        DecimalFormat formatter = new DecimalFormat("###,###,###.##");
+
+        return formatter.format(Double.valueOf(number)) + " VNĐ";
     }
 }
