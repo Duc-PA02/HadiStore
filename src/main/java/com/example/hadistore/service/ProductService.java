@@ -9,6 +9,7 @@ public interface ProductService {
     List<Product> getAllProducts();
 
     List<Product> getProductBestSeller();
+    List<Product> findTop10ByOrderBySoldDesc();
 
     List<Product> getRated();
 

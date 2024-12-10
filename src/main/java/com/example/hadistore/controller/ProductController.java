@@ -26,6 +26,10 @@ public class ProductController {
     public ResponseEntity<List<Product>> getProductByBestSeller() {
         return ResponseEntity.ok(productService.getProductBestSeller());
     }
+    @GetMapping("bestseller-admin")
+    public ResponseEntity<List<Product>> getTop10SellProduct() {
+        return ResponseEntity.ok(productService.findTop10ByOrderBySoldDesc());
+    }
     @GetMapping("latest")
     public ResponseEntity<List<Product>> getProductByLasted() {
         return ResponseEntity.ok(productService.getLasted());
