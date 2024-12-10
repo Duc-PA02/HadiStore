@@ -21,8 +21,21 @@ public class OrderController {
     public ResponseEntity<List<Order>> getByEmail(@PathVariable String email){
         return ResponseEntity.ok(orderService.findByEmail(email));
     }
+    @GetMapping
+    public ResponseEntity<List<Order>> getAllOrder(){
+        return ResponseEntity.ok(orderService.findAllOrder());
+    }
+    @GetMapping("{id}")
+    public ResponseEntity<Order> getOrderById(@PathVariable Long id){
+        return ResponseEntity.ok(orderService.findById(id));
+    }
     @PostMapping("/{email}")
     public ResponseEntity<Order> checkout(@PathVariable String email, @RequestBody CartRequest cartRequest){
         return ResponseEntity.ok(orderService.checkout(email, cartRequest));
+    }
+    @PutMapping("{id}")
+    public ResponseEntity<Void> updateOrderStatus(@PathVariable Long id, @RequestParam Integer status){
+        orderService.updateOrderStatus(id, status);
+        return ResponseEntity.ok().build();
     }
 }

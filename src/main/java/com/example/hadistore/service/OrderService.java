@@ -7,5 +7,8 @@ import java.util.List;
 
 public interface OrderService {
     List<Order> findByEmail(String email);
+    List<Order> findAllOrder();
+    Order findById(Long id);
     Order checkout(String email, CartRequest cartRequest);
+    void updateOrderStatus(Long orderId, Integer status);
 }

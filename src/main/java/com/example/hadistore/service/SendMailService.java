@@ -11,4 +11,7 @@ public interface SendMailService {
     void sendOtp(String email, int otp, String title);
     void run();
     void sendMailOrder(Order order);
+    public void sendMailOrderSuccess(Order order);
+    public void sendMailOrderDeliver(Order order);
+    public void sendMailOrderCancel(Order order);
 }

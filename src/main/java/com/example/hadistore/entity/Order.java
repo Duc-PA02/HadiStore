@@ -1,6 +1,5 @@
 package com.example.hadistore.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -23,8 +22,7 @@ public class Order {
     private String phone;
     private int status;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "user_id", foreignKey = @ForeignKey(name = "fk_order_user"))
-    @JsonBackReference
     private User user;
 }
