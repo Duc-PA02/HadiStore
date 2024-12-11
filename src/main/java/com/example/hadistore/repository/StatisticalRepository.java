@@ -24,6 +24,7 @@ public interface StatisticalRepository extends JpaRepository<Product, Long> {
             "    (avg(p.price) * sum(p.sold) - (avg(p.discount) * sum(p.sold))) as total_revenue\n" +
             "from category c\n" +
             "join product p on p.category_id = c.category_id\n" +
+            "where c.status = 1\n"+
             "group by c.name\n" +
             "order by total_sold desc;", nativeQuery = true)
     List<Object[]> getCategoryBestSeller();

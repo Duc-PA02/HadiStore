@@ -31,7 +31,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public List<Product> findTop10ByOrderBySoldDesc() {
-        return productRepository.findTop10ByOrderBySoldDesc();
+        return productRepository.findTop10ByStatusTrueOrderBySoldDesc();
     }
 
     @Override

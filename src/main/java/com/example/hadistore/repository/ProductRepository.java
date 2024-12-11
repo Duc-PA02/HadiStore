@@ -14,7 +14,7 @@ import java.util.Optional;
 public interface ProductRepository extends JpaRepository<Product, Long> {
     List<Product> findByStatusTrue();
     List<Product> findByStatusTrueOrderBySoldDesc();
-    List<Product> findTop10ByOrderBySoldDesc();
+    List<Product> findTop10ByStatusTrueOrderBySoldDesc();
     @Query(value = "SELECT p.* FROM product p " +
             "LEFT JOIN rate r ON p.product_id = r.product_id " +
             "WHERE p.status = TRUE " +
