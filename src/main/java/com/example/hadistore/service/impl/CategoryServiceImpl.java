@@ -29,7 +29,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     @Transactional
-    public Category updateCategory(Integer id, CategoryRequest categoryRequest) {
+    public Category updateCategory(Long id, CategoryRequest categoryRequest) {
         Category existingCategory = getCategoryById(id);
         existingCategory.setCategoryName(categoryRequest.getCategoryName());
         categoryRepository.save(existingCategory);
@@ -38,21 +38,20 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     @Transactional
-    public void deleteCategory(Integer id) {
-        Optional<Category> existCategory = categoryRepository.findById(id);
-        if (existCategory.isEmpty()){
-            throw new DataNotFoundException("Category not found");
-        }
-        categoryRepository.deleteById(id);
+    public void deleteCategory(Long id) {
+        Category category = categoryRepository.findById(id)
+                        .orElseThrow(() -> new DataNotFoundException("Category not found"));
+        category.setStatus(false);
+        categoryRepository.save(category);
     }
 
     @Override
-    public Category getCategoryById(Integer id) {
+    public Category getCategoryById(Long id) {
         return categoryRepository.findById(id).orElseThrow(() -> new DataNotFoundException("Category not found"));
     }
 
     @Override
     public List<Category> getAllCategories() {
-        return categoryRepository.findAll();
+        return categoryRepository.findByStatusTrue();
     }
 }

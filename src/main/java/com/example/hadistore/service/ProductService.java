@@ -9,6 +9,7 @@ public interface ProductService {
     List<Product> getAllProducts();
 
     List<Product> getProductBestSeller();
+    List<Product> findTop10ByOrderBySoldDesc();
 
     List<Product> getRated();
 
@@ -16,7 +17,10 @@ public interface ProductService {
 
     Product getProductById(Long productId);
 
-    List<Product> getProductByCategory(Integer categoryId);
+    List<Product> getProductByCategory(Long categoryId);
+    List<Product> findProductSuggest(Long categoryId, Long productId);
 
     Product createProduct(ProductRequest productRequest);
+    Product updateProduct(Long id, ProductRequest productRequest);
+    void deleteProduct(Long id);
 }

@@ -1,10 +1,12 @@
 package com.example.hadistore.controller;
 
 import com.example.hadistore.dtos.request.CategoryRequest;
+import com.example.hadistore.dtos.response.ResponseData;
 import com.example.hadistore.entity.Category;
 import com.example.hadistore.service.CategoryService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,7 +25,7 @@ public class CategoryController {
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<?> getById(@PathVariable("id") Integer id) {
+    public ResponseEntity<?> getById(@PathVariable("id") Long id) {
         return ResponseEntity.ok(categoryService.getCategoryById(id));
     }
 
@@ -33,13 +35,13 @@ public class CategoryController {
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<?> updateCategory(@PathVariable("id") Integer id, @Valid @RequestBody CategoryRequest categoryRequest){
+    public ResponseEntity<?> updateCategory(@PathVariable("id") Long id, @Valid @RequestBody CategoryRequest categoryRequest){
         return ResponseEntity.ok(categoryService.updateCategory(id, categoryRequest));
     }
 
     @DeleteMapping("{id}")
-    public ResponseEntity<?> deleteCategory(@PathVariable("id") Integer id){
+    public ResponseData<?> deleteCategory(@PathVariable("id") Long id){
         categoryService.deleteCategory(id);
-        return ResponseEntity.ok("delete success");
+        return new ResponseData<>(HttpStatus.NO_CONTENT,"delete success");
     }
 }

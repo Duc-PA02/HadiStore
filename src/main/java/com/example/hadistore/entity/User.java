@@ -11,7 +11,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDate;
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -24,7 +23,7 @@ import java.util.stream.Collectors;
 public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long userId;
     private String name;
     private String email;
     private String password;
@@ -34,14 +33,14 @@ public class User implements UserDetails {
     private String image;
     private LocalDate registerDate;
     private Boolean status;
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "user_role",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"),
             uniqueConstraints = @UniqueConstraint(columnNames = {"user_id", "role_id"})
     )
-    private Set<Role> roles = new HashSet<>();
+    private Set<Role> roles;
 
     public User(String name, String email, String password, String phone, String address, Boolean gender, Boolean status, String image, LocalDate registerDate) {
         this.name = name;
@@ -53,6 +52,11 @@ public class User implements UserDetails {
         this.status = status;
         this.image = image;
         this.registerDate = registerDate;
+    }
+
+    @PrePersist
+    private void onCreate(){
+        registerDate = LocalDate.now();
     }
 
     @Override

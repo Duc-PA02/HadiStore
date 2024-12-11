@@ -20,5 +20,4 @@ public class SignUpRequest {
     private Boolean status;
     private String image;
     private LocalDate registerDate;
-    private Integer roleId;
 }
