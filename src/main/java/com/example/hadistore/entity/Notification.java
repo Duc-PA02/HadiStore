@@ -19,5 +19,9 @@ public class Notification {
     private Long id;
     private String message;
     private LocalDate time;
-    private Boolean status;
+    private Boolean status = false;
+    @PrePersist
+    private void onCreate(){
+        time = LocalDate.now();
+    }
 }
