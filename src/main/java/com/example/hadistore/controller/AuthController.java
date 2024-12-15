@@ -42,7 +42,7 @@ public class AuthController {
         return ResponseEntity.ok(random_otp);
     }
     @PostMapping("send-mail-forgot-password")
-    public ResponseEntity<String> sendToken(@RequestBody String email){
-        return ResponseEntity.ok(userService.sendToken(email));
+    public ResponseData<String> sendToken(@RequestBody String email){
+        return new ResponseData<>(HttpStatus.NO_CONTENT, userService.sendToken(email));
     }
 }
