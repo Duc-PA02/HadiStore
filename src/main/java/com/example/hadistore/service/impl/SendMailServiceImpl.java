@@ -78,6 +78,12 @@ public class SendMailServiceImpl implements SendMailService {
             }
         }
     }
+    @Override
+    public void sendMaiToken(String email, String title) {
+        String body = "\r\n" + "    <h2>Hãy nhấp vào link để thay đổi mật khẩu của bạn</h2>\r\n"
+                + "    <a href=\"http://localhost:8080/api/v1/forgot-password/" + email + "\">Đổi mật khẩu</a>";
+        queue(email, title, body);
+    }
 
     @Override
     public void sendMailOrder(Order order) {

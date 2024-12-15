@@ -4,6 +4,7 @@ import com.example.hadistore.dtos.request.LoginRequest;
 import com.example.hadistore.dtos.request.SignUpRequest;
 import com.example.hadistore.dtos.response.LoginResponse;
 import com.example.hadistore.dtos.response.ResponseData;
+import com.example.hadistore.entity.User;
 import com.example.hadistore.service.SendMailService;
 import com.example.hadistore.service.UserService;
 import jakarta.validation.Valid;
@@ -12,10 +13,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("${api.prefix}")
@@ -41,5 +40,9 @@ public class AuthController {
         }
         sendMailService.sendOtp(email, random_otp, "Xác nhận tài khoản!");
         return ResponseEntity.ok(random_otp);
+    }
+    @PostMapping("send-mail-forgot-password")
+    public ResponseEntity<String> sendToken(@RequestBody String email){
+        return ResponseEntity.ok(userService.sendToken(email));
     }
 }

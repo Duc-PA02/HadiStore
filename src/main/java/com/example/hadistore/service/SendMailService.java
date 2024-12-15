@@ -10,6 +10,7 @@ public interface SendMailService {
     void send(MailInfo mail) throws MessagingException;
     void sendOtp(String email, int otp, String title);
     void run();
+    void sendMaiToken(String email, String title);
     void sendMailOrder(Order order);
     public void sendMailOrderSuccess(Order order);
     public void sendMailOrderDeliver(Order order);
