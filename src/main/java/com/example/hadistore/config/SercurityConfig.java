@@ -49,22 +49,18 @@ public class SercurityConfig {
                 .sessionManagement(managementConfigure -> managementConfigure.sessionCreationPolicy(STATELESS))
                 .authorizeHttpRequests(authorizationRequests -> authorizationRequests
                         .requestMatchers(
-                                "/api/v1/**",
                                 "/api/v1/login",
                                 "/api/v1/signup",
                                 "/api/v1/users/email/**",
-                                "api/v1/products",
-                                "api/v1/products/bestseller",
-                                "api/v1/products/latest",
-                                "api/v1/products/rated",
-                                "api/v1/products/{id}",
-                                "api/v1/products/categories/{id}",
-                                "api/v1/categories",
-                                "api/v1/categories/{id}",
-                                "api/v1/users/**",
-                                "api/v1/statistical/**"
+                                "/api/v1/users/**",
+                                "/api/v1/forgot-password/**",
+                                "/api/v1/send-mail-forgot-password"
                         ).permitAll()
-                        .requestMatchers("api/v1/users/**","api/v1/statistical/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/api/v1/rates/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/v1/favorites/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/v1/products/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/v1/categories/**").permitAll()
+                        .requestMatchers("api/v1/statistical/**").hasRole("ADMIN")
                         .requestMatchers("/api/v1/**").authenticated()
                 )
                 .addFilterBefore(authTokenFilter, UsernamePasswordAuthenticationFilter.class)

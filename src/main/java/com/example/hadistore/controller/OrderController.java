@@ -35,6 +35,7 @@ public class OrderController {
         return ResponseEntity.ok(orderService.checkout(email, cartRequest));
     }
     @PutMapping("{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> updateOrderStatus(@PathVariable Long id, @RequestParam Integer status){
         orderService.updateOrderStatus(id, status);
         return ResponseEntity.ok().build();

@@ -13,4 +13,5 @@ public interface UserService {
     LoginResponse login(LoginRequest loginRequest);
     User findByEmail(String email);
     Boolean existEmail(String email);
+    String sendToken(String email);
 }

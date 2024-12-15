@@ -11,6 +11,7 @@ import com.example.hadistore.exceptions.DataNotFoundException;
 import com.example.hadistore.repository.CartRepository;
 import com.example.hadistore.repository.RoleRepository;
 import com.example.hadistore.repository.UserRepository;
+import com.example.hadistore.service.SendMailService;
 import com.example.hadistore.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -32,6 +33,7 @@ public class UserServiceImmpl implements UserService {
     private final PasswordEncoder passwordEncoder;
     private final RoleRepository roleRepository;
     private final CartRepository cartRepository;
+    private final SendMailService sendMailService;
     private final AuthenticationManager authenticationManager;
     private final JwtTokenProvider jwtTokenProvider;
 
@@ -91,5 +93,14 @@ public class UserServiceImmpl implements UserService {
     @Override
     public Boolean existEmail(String email) {
         return userRepository.existsByEmail(email);
+    }
+
+    @Override
+    public String sendToken(String email) {
+        if (!userRepository.existsByEmail(email)){
+            throw new DataNotFoundException("email does not exist");
+        }
+        sendMailService.sendMaiToken(email, "Reset password");
+        return "Send mail to " + email + " Successfully";
     }
 }

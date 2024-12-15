@@ -11,7 +11,7 @@ import org.springframework.web.socket.config.annotation.WebSocketHandlerRegistry
 @Configuration
 @EnableWebSocket
 public class WebSocketConfig implements WebSocketConfigurer {
-    private final static String NOTIFICATION_ENDPOINT = "/notification";
+    private final static String NOTIFICATION_ENDPOINT = "v1/notification";
     @Override
     public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
         registry.addHandler(getNotificationWebSocketHandler(), NOTIFICATION_ENDPOINT)
