@@ -54,7 +54,9 @@ public class SercurityConfig {
                                 "/api/v1/users/email/**",
                                 "/api/v1/users/**",
                                 "/api/v1/forgot-password/**",
-                                "/api/v1/send-mail-forgot-password"
+                                "/api/v1/send-mail-forgot-password",
+                                "api/v1/send-mail/otp",
+                                "/notification"
                         ).permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/v1/rates/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/v1/favorites/**").permitAll()
