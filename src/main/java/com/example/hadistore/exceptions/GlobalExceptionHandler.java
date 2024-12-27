@@ -31,4 +31,8 @@ public class GlobalExceptionHandler {
     public ResponseData<String> handleInvalidParameterException(InvalidParameterException exception){
         return new ResponseData<>(HttpStatus.UNPROCESSABLE_ENTITY, exception.getMessage());
     }
+    @ExceptionHandler
+    public ResponseData<String> handleIllegalStateExceptionException(IllegalStateException exception){
+        return new ResponseData<>(HttpStatus.BAD_REQUEST, exception.getMessage());
+    }
 }
