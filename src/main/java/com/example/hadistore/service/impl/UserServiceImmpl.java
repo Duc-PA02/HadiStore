@@ -5,10 +5,13 @@ import com.example.hadistore.dtos.request.LoginRequest;
 import com.example.hadistore.dtos.request.SignUpRequest;
 import com.example.hadistore.dtos.response.LoginResponse;
 import com.example.hadistore.entity.Cart;
+import com.example.hadistore.entity.Order;
 import com.example.hadistore.entity.Role;
 import com.example.hadistore.entity.User;
+import com.example.hadistore.enums.OrderStatus;
 import com.example.hadistore.exceptions.DataNotFoundException;
 import com.example.hadistore.repository.CartRepository;
+import com.example.hadistore.repository.OrderRepository;
 import com.example.hadistore.repository.RoleRepository;
 import com.example.hadistore.repository.UserRepository;
 import com.example.hadistore.service.SendMailService;
@@ -33,6 +36,7 @@ public class UserServiceImmpl implements UserService {
     private final PasswordEncoder passwordEncoder;
     private final RoleRepository roleRepository;
     private final CartRepository cartRepository;
+    private final OrderRepository orderRepository;
     private final SendMailService sendMailService;
     private final AuthenticationManager authenticationManager;
     private final JwtTokenProvider jwtTokenProvider;
@@ -40,6 +44,12 @@ public class UserServiceImmpl implements UserService {
     @Override
     public List<User> findUserByStatusTrue() {
         return userRepository.findUserByStatusTrue();
+    }
+
+    @Override
+    public User findById(Long id) {
+        return userRepository.findById(id)
+                .orElseThrow(() -> new DataNotFoundException("User not found"));
     }
 
     @Override
@@ -102,5 +112,41 @@ public class UserServiceImmpl implements UserService {
         }
         sendMailService.sendMaiToken(email, "Reset password");
         return "Send mail to " + email + " Successfully";
+    }
+
+    @Override
+    public User updateUser(Long userId, SignUpRequest signUpRequest) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new DataNotFoundException("User not found"));
+        user.setName(signUpRequest.getName());
+        user.setEmail(signUpRequest.getEmail());
+        user.setAddress(signUpRequest.getAddress());
+        user.setGender(signUpRequest.getGender());
+        user.setImage(signUpRequest.getImage());
+        user.setPhone(signUpRequest.getPhone());
+        if (!user.getPassword().equals(passwordEncoder.encode(signUpRequest.getPassword()))){
+            user.setPassword(passwordEncoder.encode(signUpRequest.getPassword()));
+        }
+        return userRepository.save(user);
+    }
+
+    @Override
+    public void deleteUser(Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new DataNotFoundException("User not found"));
+        List<Order> orderList = orderRepository.findByUserOrderByOrdersIdDesc(user);
+        boolean check = false;
+        for (Order order : orderList){
+            if (order.getStatus() == OrderStatus.DELIVED.getValue()){
+                check = true;
+                break;
+            }
+        }
+        if (!check) {
+            user.setStatus(false);
+        } else {
+            throw new IllegalStateException("Cannot delete user with delivered orders.");
+        }
+        userRepository.save(user);
     }
 }

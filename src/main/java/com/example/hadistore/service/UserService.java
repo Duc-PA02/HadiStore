@@ -9,9 +9,12 @@ import java.util.List;
 
 public interface UserService {
     List<User> findUserByStatusTrue();
+    User findById(Long id);
     User createUser(SignUpRequest signUpRequest);
     LoginResponse login(LoginRequest loginRequest);
     User findByEmail(String email);
     Boolean existEmail(String email);
     String sendToken(String email);
+    User updateUser(Long userId, SignUpRequest signUpRequest);
+    void deleteUser(Long userId);
 }
